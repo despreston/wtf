@@ -1,8 +1,10 @@
 package textfile
 
 import (
+	"os"
+	"os/exec"
+
 	"github.com/gdamore/tcell/v2"
-	"github.com/wtfutil/wtf/utils"
 )
 
 func (widget *Widget) initializeKeyboardControls() {
@@ -20,5 +22,13 @@ func (widget *Widget) initializeKeyboardControls() {
 
 func (widget *Widget) openFile() {
 	src := widget.CurrentSource()
-	utils.OpenFile(src)
+	widget.tviewApp.Suspend(func() {
+		cmd := exec.Command("nvim", src)
+		cmd.Stdout = os.Stdout
+		cmd.Stdin = os.Stdin
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			panic(err)
+		}
+	})
 }

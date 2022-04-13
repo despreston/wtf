@@ -26,6 +26,7 @@ type Widget struct {
 	view.TextWidget
 
 	settings *Settings
+	tviewApp *tview.Application
 }
 
 // NewWidget creates a new instance of a widget
@@ -35,6 +36,7 @@ func NewWidget(tviewApp *tview.Application, pages *tview.Pages, settings *Settin
 		TextWidget:        view.NewTextWidget(tviewApp, pages, settings.Common),
 
 		settings: settings,
+		tviewApp: tviewApp,
 	}
 
 	// Don't use a timer for this widget, watch for filesystem changes instead
